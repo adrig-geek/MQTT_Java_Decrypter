@@ -1,49 +1,47 @@
 package org.eclipse.paho;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
+import AES.AesCipher;
+import AES.AesTreatment;
+import MQTT.MQTTClient;
 
-        String topic        = "MQTT Examples";
-        String content      = "Message from MqttPublishSample";
-        int qos             = 2;
-        String broker       = "tcp://iot.eclipse.org:1883";
-        String clientId     = "JavaSample";
-        MemoryPersistence persistence = new MemoryPersistence();
+public class App {
 
-        try {
-            MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            System.out.println("Connecting to broker: "+broker);
-            sampleClient.connect(connOpts);
-            System.out.println("Connected");
-            System.out.println("Publishing message: "+content);
-            MqttMessage message = new MqttMessage(content.getBytes());
-            message.setQos(qos);
-            sampleClient.publish(topic, message);
-            System.out.println("Message published");
-            sampleClient.disconnect();
-            System.out.println("Disconnected");
-            System.exit(0);
-        } catch(MqttException me) {
-            System.out.println("reason "+me.getReasonCode());
-            System.out.println("msg "+me.getMessage());
-            System.out.println("loc "+me.getLocalizedMessage());
-            System.out.println("cause "+me.getCause());
-            System.out.println("excep "+me);
-            me.printStackTrace();
-        }
+
+    public static void main( String[] args ){
+        MQTTClient mqtt = new MQTTClient("tcp://172.16.2.153:1883");
+        //mqtt.publish("Hola");
+        //mqtt.disconnect();
+        testAES();
+    }
+
+    private static void testAES() {
+
+        System.out.println("*******************************");
+        System.out.println("TEST MQTT");
+        System.out.println("*******************************");
+        // Eexample of TextAESCrypter
+
+        // source text
+        final String srcText = "I'm happy.";
+
+        String key = "0123456789012345";
+        String iv = "0000000000000000";
+
+        // create crypter
+        final AesCipher crypter = new AesCipher();
+
+        // set keys
+        crypter.setCryptKey(key, iv);
+
+        // do encrypt
+        String encryptedText = crypter.encrypt(srcText);
+
+        // show result
+        System.out.println("Original = " + srcText + " -> Encrypted = " + encryptedText + "\n");
+
+        System.out.println("Encrypted = " + encryptedText + " -> Decrpyted = " + crypter.decrypt(encryptedText));
+
+        System.out.println("*******************************");
     }
 }
