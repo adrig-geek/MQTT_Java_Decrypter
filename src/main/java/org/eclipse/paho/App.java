@@ -8,9 +8,7 @@ public class App {
 
 
     public static void main( String[] args ){
-        MQTTClient mqtt = new MQTTClient("tcp://172.16.99.131:1883");
-        //mqtt.publish("Hola");
-        //mqtt.disconnect();
+        new MQTTClient("tcp://172.16.99.131:1883");
         testAES();
     }
 

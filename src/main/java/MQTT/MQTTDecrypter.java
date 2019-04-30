@@ -22,7 +22,7 @@ public class MQTTDecrypter {
 
     public String decryptMQTTMessage(String message){
         String result = aesCipher.decrypt(message);
-        System.out.println(result);
+        System.out.println("Decrypted: "+result);
         return result;
     }
 

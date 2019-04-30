@@ -3,8 +3,6 @@ package MQTT;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.util.Arrays;
-
 public class MQTTClient implements MqttCallback {
 
     private static final String topic = "enc/";
@@ -41,10 +39,10 @@ public class MQTTClient implements MqttCallback {
     }
 
 
-    public void publish(String content, String topicIn){
+    private void publish(String content, String topicIn){
         try {
 
-            System.out.println("Publishing message: "+content);
+            System.out.println("PUBLISH message[ " + topicIn + " ]: " +content);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
             mqttClient.publish(topicIn, message);
@@ -79,14 +77,10 @@ public class MQTTClient implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void connectionLost(Throwable cause) {
-        // TODO Auto-generated method stub
-
     }
 
 }

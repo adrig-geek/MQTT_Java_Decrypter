@@ -127,7 +127,6 @@ public class AesCipher {
     private byte[] decodeHex(char[] data) throws Exception {
 
         int len = data.length;
-        System.out.println(len);
         if ((len & 0x01) != 0) {
             throw new Exception("Odd number of characters.");
         }
