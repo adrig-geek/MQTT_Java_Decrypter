@@ -1,28 +1,26 @@
 package MQTT;
 
-import AES.AesCipher;
-import AES.AesTreatment;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.Arrays;
+
 public class MQTTClient implements MqttCallback {
 
-    private String topic        = "MQTT Examples";
-    private int qos             = 2;
+    private static final String topic = "enc/";
+    private static final int qos = 2;
     private String broker;
     private String clientId;
     private MemoryPersistence persistence = new MemoryPersistence();
     private int clientIdAcum;
     private MqttClient mqttClient;
-
-    private static final String key = "0123456789012345";
-    private static final String iv = "0000000000000000";
-    private AesCipher aesCipher;
+    private MQTTDecrypter mqttDecrypter;
 
     public MQTTClient(String broker){
         this.broker = broker;
-        clientId = Integer.toString(clientIdAcum++);
+        clientId = "AESCipherClient"+clientIdAcum++;
         connect();
+        mqttDecrypter = new MQTTDecrypter();
 
 
     }
@@ -36,27 +34,20 @@ public class MQTTClient implements MqttCallback {
             mqttClient.connect(connOpts);
             System.out.println("Connected");
             mqttClient.setCallback(this);
-            mqttClient.subscribe("#");
-            configureAES();
+            mqttClient.subscribe(MQTTClient.topic+"#");
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
 
-    private void configureAES(){
-        // create crypter
-        aesCipher = new AesCipher();
 
-        // set keys
-        aesCipher.setCryptKey(key, iv);
-    }
-    public void publish(String content){
+    public void publish(String content, String topicIn){
         try {
 
             System.out.println("Publishing message: "+content);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
-            mqttClient.publish(topic, message);
+            mqttClient.publish(topicIn, message);
             System.out.println("Message published");
         } catch(MqttException me) {
             System.out.println("reason "+me.getReasonCode());
@@ -80,11 +71,10 @@ public class MQTTClient implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message){
         System.out.println("MSG ARR. [ " + topic + " ]");
-        System.out.println(message.getPayload());
-        System.out.println(message.getPayload().length);
         System.out.println(new String(message.getPayload()));
-        String result = aesCipher.decrypt(new String(message.getPayload()));
-        System.out.println(result);
+        String decrypted = mqttDecrypter.decryptMQTTMessage(new String(message.getPayload()));
+        String[] splitted = topic.split("/");
+        publish(decrypted, splitted[1]);
     }
 
     @Override

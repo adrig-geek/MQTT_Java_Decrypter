@@ -2,14 +2,13 @@ package org.eclipse.paho;
 
 
 import AES.AesCipher;
-import AES.AesTreatment;
 import MQTT.MQTTClient;
 
 public class App {
 
 
     public static void main( String[] args ){
-        MQTTClient mqtt = new MQTTClient("tcp://172.16.2.153:1883");
+        MQTTClient mqtt = new MQTTClient("tcp://172.16.99.131:1883");
         //mqtt.publish("Hola");
         //mqtt.disconnect();
         testAES();
@@ -18,9 +17,8 @@ public class App {
     private static void testAES() {
 
         System.out.println("*******************************");
-        System.out.println("TEST MQTT");
+        System.out.println("TEST AES");
         System.out.println("*******************************");
-        // Eexample of TextAESCrypter
 
         // source text
         final String srcText = "I'm happy.";
@@ -38,7 +36,7 @@ public class App {
         String encryptedText = crypter.encrypt(srcText);
 
         // show result
-        System.out.println("Original = " + srcText + " -> Encrypted = " + encryptedText + "\n");
+        System.out.println("Original = " + srcText + " -> Encrypted = " + encryptedText);
 
         System.out.println("Encrypted = " + encryptedText + " -> Decrpyted = " + crypter.decrypt(encryptedText));
 
