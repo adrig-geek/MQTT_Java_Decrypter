@@ -4,12 +4,23 @@ package org.eclipse.paho;
 import AES.AesCipher;
 import MQTT.MQTTClient;
 
+import java.util.Scanner;
+
 public class App {
 
 
     public static void main( String[] args ){
-        new MQTTClient("tcp://172.16.99.131:1883");
+        System.out.println("****************************");
+        System.out.println("Testbed Java Decrypter");
+        System.out.println("****************************");
+        new MQTTClient("tcp://"+enterIP()+":1883");
         testAES();
+    }
+
+    private static String enterIP(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the IP of the Broker:");
+        return scanner.nextLine();
     }
 
     private static void testAES() {
@@ -19,7 +30,7 @@ public class App {
         System.out.println("*******************************");
 
         // source text
-        final String srcText = "I'm happy.";
+        final String srcText = "I'm a GRITS Researcher.";
 
         String key = "0123456789012345";
         String iv = "0000000000000000";

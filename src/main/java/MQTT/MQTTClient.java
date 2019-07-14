@@ -46,7 +46,7 @@ public class MQTTClient implements MqttCallback {
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
             mqttClient.publish(topicIn, message);
-            System.out.println("Message published");
+            System.out.println("Message published\n");
         } catch(MqttException me) {
             System.out.println("reason "+me.getReasonCode());
             System.out.println("msg "+me.getMessage());
