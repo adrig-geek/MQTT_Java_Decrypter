@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MQTT_Java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MQTT_Java_jar</output-path>
+    <root id="archive" name="MQTT_Java.jar">
+      <element id="module-output" name="MQTT_Java" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.0/org.eclipse.paho.client.mqttv3-1.2.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
